@@ -9,3 +9,42 @@ $ npx install create-react-app client
 # install dependencies
 $ npm install axios react react-dom react-redux react-router-dom react-scripts redux redux-form redux-thunk
 ```
+
+## 2. Put all the route configuration to the index.js, which centralizes all our core setup logics for our application
+
+Whenever the <App /> component is rendered, the <Route /> component will be passed to the <App /> as the prop, called children. And the <App /> component doesn't have to have the navigation logic
+
+```js
+// index.js
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { BrowserRouter, Route } from 'react-router-dom';
+
+import App from './components/App';
+import Welcome from './components/Welcome';
+
+ReactDOM.render(
+  <BrowserRouter>
+    <App>
+      <Route path='/' exact component={Welcome} />
+    </App>
+  </BrowserRouter>,
+  document.querySelector('#root')
+);
+
+// App.js
+import React from 'react';
+
+import Header from './Header';
+
+const App = ({ children }) => {
+  return (
+    <div>
+      <Header />
+      { children }
+    </div>
+  );
+}
+
+export default App;
+```
