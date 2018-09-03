@@ -48,3 +48,38 @@ const App = ({ children }) => {
 
 export default App;
 ```
+
+## 3. Wire up Redux for Redux Form
+
+Add reducers and export to index.js
+
+```javascript
+// reducers/index.js
+import { combineReducers } from 'redux';
+import auth from './auth';
+
+export default combineReducers({
+  auth,
+});
+
+// reducers/auth.js
+export default (state, action) => {
+  switch (action.type) {
+    default:
+      return state;
+  }
+}
+
+// index.js
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
+
+import reducers from './reducers';
+
+ReactDOM.render(
+  <Provider store={createStore(reducers, {})}>
+    ...
+  </Provider>,
+  document.querySelector('#root');
+)
+```
