@@ -119,3 +119,23 @@ class Signup extends Component {
 
 export default reduxForm({ form: 'signup' })(Signup);
 ```
+
+## 5. Handling form submission
+
+```javascript
+// components/signup.js
+class Signup extends Component {
+  onSubmit = formProps => {
+    // ...
+  }
+  render() {
+    const { handleSubmit } = this.props;
+
+    return (
+      <form onSubmit={handleSubmit(onSubmit)}>
+        <button>Sign Up</button>
+      </form>
+    );
+  }
+}
+```

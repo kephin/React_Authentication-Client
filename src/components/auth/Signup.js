@@ -3,9 +3,16 @@ import { reduxForm, Field } from 'redux-form';
 
 class Signup extends Component {
   state = {  }
+
+  onSubmit = formProps => {
+    console.log(formProps);
+  };
+
   render() {
+    const { handleSubmit } = this.props;
+
     return (
-      <form>
+      <form onSubmit={handleSubmit(this.onSubmit)}>
         <fieldset>
           <label htmlFor="">Email</label>
           <Field
@@ -22,6 +29,7 @@ class Signup extends Component {
             component='input'
           />
         </fieldset>
+        <button>Sign Up</button>
       </form>
     );
   }
