@@ -83,3 +83,39 @@ ReactDOM.render(
   document.querySelector('#root');
 )
 ```
+
+## 4. Setup Redux Form and wire up to Sign-Up form
+
+```javascript
+// reducer/index.js
+import { combineReducers } from 'redux';
+import { reducer as formReducer } from 'redux-form';
+
+import auth from './auth';
+
+export default combineReducers({
+  auth,
+  form: formReducers
+});
+
+// components/signup.js
+import { reduxForm, Field } from 'redux-form';
+
+class Signup extends Component {
+  render() {
+    return (
+      <fieldset>
+        <label>Email</label>
+        <Field
+          name='email'
+          type='text'
+          component='input'
+        />
+        ...
+      </fieldset>
+    )
+  }
+}
+
+export default reduxForm({ form: 'signup' })(Signup);
+```
