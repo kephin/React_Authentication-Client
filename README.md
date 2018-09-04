@@ -167,3 +167,64 @@ ReactDom.render(
   </Provider>
 );
 ```
+
+## 7. Make Signup component a container or a connected component
+
+First, add action creator and type
+
+```javascript
+// actions/types.js
+export const AUTH_USER = 'auth_user';
+
+// actions/auth.js
+import axios from 'axios';
+import { AUTH_USER } from './types';
+
+/* Redux Thunk - returns a function with the dispatch function parameter */
+export const signup = formProps => async dispatch => {
+  const response = await axios.post('http://localhost:3090/signup', formProps);
+
+  dispatch({
+    type: AUTH_USER,
+    payload: response.data.jwtToken,
+  });
+}
+```
+
+Second, make Signup component a connected component
+
+```javascript
+// use compose method to make syntax cleaner
+import { compose } from 'redux';
+import { connect } from 'react-redux';
+
+class Signup extends Component {
+  ...
+}
+
+export default compose(
+  connect(null, actions),
+  reduxForm({ form: 'signup' }),
+)(Signup);
+```
+
+Last, deal with reducer for dispatched action
+
+```javascript
+import { AUTH_USER } from '../actions/types';
+
+const INITIAL_STATE = {
+  authenticated: '',
+  errorMessage: '',
+};
+
+export default (state = INITIAL_STATE, action) => {
+  switch (action.type) {
+    case AUTH_USER:
+      return { ...state, authenticated: action.payload };
+
+    default:
+      return state;
+  }
+}
+```
