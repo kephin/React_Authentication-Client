@@ -139,3 +139,31 @@ class Signup extends Component {
   }
 }
 ```
+
+What is Redux-Thunk?
+
+A typical action creator is always to return an object that has properties of an type and a payload. And then this action get sent to the middleware and then reducers. Reducers then produce the new state and that flow back to our components.
+
+So what is Redux-Thunk?
+
+Rather than returning an object, we can return a function with the dispatch function parameter. It allow us to return an different value type from our action creators.
+
+1. By having the ability to return a function with dispatch, we gain the ability to dispatch as many actions that we want from a single action creator.
+
+2. In addition, we can handle asynchronous request.
+
+## 6. Wire up Redux Thunk middleware
+
+```javascript
+// index.js
+import { createStore, applyMiddleware } from 'redux';
+import reduxThunk from 'redux-thunk';
+
+const store = createStore(reducers, {}, applyMiddleware(reduxThunk));
+
+ReactDom.render(
+  <Provider store={store}>
+    ...
+  </Provider>
+);
+```
