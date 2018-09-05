@@ -228,3 +228,79 @@ export default (state = INITIAL_STATE, action) => {
   }
 }
 ```
+
+## 8. Display auth errors
+
+First in actions/auth.js, return an object with type of AUTH_ERROR and payload of errorMessage when fail to sign up.
+
+```javascript
+// actions/types.js
+export const AUTH_USER = 'auth_user';
+export const AUTH_ERROR = 'auth_error';
+
+// actions/auth.js
+import axios from 'axios';
+import { AUTH_USER, AUTH_ERROR } from './types';
+
+export const signup = formProps => async dispatch => {
+  try {
+    const response = await axios.post('http://localhost:3090', formProps);
+
+    return {
+      type: AUTH_USER,
+      payload: response.data.jwtToken,
+    };
+  } catch (error) {
+    return {
+      type: AUTH_ERROR,
+      payload: error.response.data.errorMessage,
+    }
+  }
+};
+```
+
+Second, reducers
+
+```javascript
+import { AUTH_USER, AUTH_ERROR } from '../actions/types';
+
+const INITIAL_STATE = {
+  authenticated: '',
+  errorMessage: '',
+};
+
+export default (state = INITIAL_STATE, action) => {
+  switch (action.type) {
+    ...
+    case AUTH_ERROR:
+      return { ...state, errorMessage: action.payload };
+  }
+}
+```
+
+Last, make Signup component be able to access application state
+
+```javascript
+class Signup extends Component {
+  render() {
+    return (
+      ...
+      <div>{this.props.errorMessage}</div>
+      ...
+    );
+  }
+}
+
+const mapStateToProps = state => {
+  const { auth } = state;
+
+  return {
+    errorMessage: auth.errorMessage,
+  };
+};
+
+export default compose(
+  connect(mapStateToProps, actions),
+  reduxForm({ form: 'signup' }),
+)(Singup);
+```

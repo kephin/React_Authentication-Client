@@ -33,13 +33,22 @@ class Signup extends Component {
             component='input'
           />
         </fieldset>
+        <div>{this.props.errorMessage}</div>
         <button>Sign Up</button>
       </form>
     );
   }
 }
 
+const mapStateToProps = state => {
+  const { auth } = state;
+
+  return {
+    errorMessage: auth.errorMessage,
+  };
+};
+
 export default compose(
-  connect(null, actions),
+  connect(mapStateToProps, actions),
   reduxForm({ form: 'signup' }),
 )(Signup);
